@@ -5,9 +5,9 @@ from res2net import res2net50_v1b_26w_4s
 from torchvision import transforms
 import torchvision.transforms as transforms
 import torchvision
-import numpy as np  # 存储处理大型矩阵
+import numpy as np  
 import imageio
-import matplotlib.pyplot as plt  # plt 用于显示图片
+import matplotlib.pyplot as plt  
 import cv2
 
 
@@ -15,11 +15,11 @@ class CNN1(nn.Module):
     def __init__(self, channel, map_size, pad):
         super(CNN1, self).__init__()
         self.weight = nn.Parameter(torch.ones(channel, channel, map_size, map_size),
-                                   requires_grad=False).cuda()  # 初始化weight
-        self.bias = nn.Parameter(torch.zeros(channel), requires_grad=False).cuda()  # 初始化bias
-        self.pad = pad  # 填充
-        self.norm = nn.BatchNorm2d(channel)  # 批归一化层
-        self.relu = nn.ReLU()  # 激活函数ReLu
+                                   requires_grad=False).cuda()  
+        self.bias = nn.Parameter(torch.zeros(channel), requires_grad=False).cuda()  
+        self.pad = pad  
+        self.norm = nn.BatchNorm2d(channel)  
+        self.relu = nn.ReLU()  
 
     def forward(self, x):
         out = F.conv2d(x, self.weight, self.bias, stride=1, padding=self.pad)
@@ -70,7 +70,6 @@ class CENet(nn.Module):
         self.x5_x4_x3_x2_x1 = nn.Sequential(nn.Conv2d(64, 64, kernel_size=3, padding=1), nn.BatchNorm2d(64),
                                             nn.ReLU(inplace=True))
 
-        #根据y，设置相应的卷积函数
         self.y5_dem_1 = nn.Sequential(nn.Conv2d(2048, 64, kernel_size=3, padding=1), nn.BatchNorm2d(64),
                                       nn.ReLU(inplace=True))
         self.y4_dem_1 = nn.Sequential(nn.Conv2d(1024, 64, kernel_size=3, padding=1), nn.BatchNorm2d(64),
@@ -137,7 +136,7 @@ class CENet(nn.Module):
         y_x5 = self.y5_dem_1(y_x5)
         x5_dem_1 = x5_dem_1 + y_x5
         y5_dem_1 = y5_dem_1 + x_y5
-        x5_dem_1 = self.cov3(self.cov3(x5_dem_1) + self.cov3(y5_dem_1))#原来为3*3卷积核，考虑到两边特征得到差分特征后不需要再进行相关卷积处理后，改为1*1的卷积核
+        x5_dem_1 = self.cov3(self.cov3(x5_dem_1) + self.cov3(y5_dem_1))
 
         # Difference fusion
         x_y4 = x4 - y4
@@ -148,7 +147,7 @@ class CENet(nn.Module):
         y_x4 = self.y4_dem_1(y_x4)
         x4_dem_1 = x4_dem_1 + y_x4
         y4_dem_1 = y4_dem_1 + x_y4
-        x4_dem_1 = self.cov3(self.cov3(x4_dem_1) + self.cov3(y4_dem_1))#与上同理
+        x4_dem_1 = self.cov3(self.cov3(x4_dem_1) + self.cov3(y4_dem_1))
 
         # Difference fusion
         x_y3 = x3 - y3
@@ -273,10 +272,9 @@ class CENet(nn.Module):
         output2 = self.output2(F.upsample(output3, size=level2.size()[2:], mode='bilinear') + level2)
         output1 = self.output1(F.upsample(output2, size=level1.size()[2:], mode='bilinear') + level1)
 
-        #以下为在5月5日新添加的代码程序，在图像重构阶段，思考不直接从64通道到1通道，而是经过两层卷积层处理，再转化到1通道
         output64_32 = self.output64_32(output1)
         output32_16 = self.output32_16(output64_32)
-        # output64_16 = self.output64_16(output1) #正确的为去掉这一句，将上面两句复原，开始运行
+        # output64_16 = self.output64_16(output1) 
         output16_3 = self.output16_3(output32_16)
         output = F.upsample(output16_3, size=input.size()[2:], mode='bilinear')
 
