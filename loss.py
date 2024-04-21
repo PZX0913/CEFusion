@@ -55,7 +55,7 @@ class NormalLoss(nn.Module):
         loss = self.criteria(logits, labels)
         return torch.mean(loss)
 
-class Fusionloss(nn.Module):#融合损失，包括强度损失pixel以及纹理texture损失
+class Fusionloss(nn.Module)
     def __init__(self):
         super(Fusionloss, self).__init__()
         self.sobelconv=Sobelxy()
@@ -114,7 +114,6 @@ class Fusionloss(nn.Module):#融合损失，包括强度损失pixel以及纹理t
 class Sobelxy(nn.Module):
     def __init__(self):
         super(Sobelxy, self).__init__()
-        #这里也可以从卷积核直接入手，将一个一维的单通道卷积核变为三通道
         kernelx = [[[-1, 0, 1],
                   [-2, 0, 2],
                   [-1, 0, 1]],
