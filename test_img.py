@@ -2,11 +2,9 @@
 # -*- encoding: utf-8 -*-
 from PIL import Image
 import numpy as np
-# np.set_printoptions(threshold=np.sys.maxsize)
 import cv2
 from torch.autograd import Variable
 from torchvision import transforms
-# from FusionNet import FusionNet 这里进行修改，从自己的函数中引入设计好的差分融合网络
 from CEFusion import CENet
 from TaskFusion_dataset import Fusion_dataset
 import argparse
@@ -16,8 +14,6 @@ import logging
 import os.path as osp
 import os
 from logger import setup_logger
-# from model_TII import BiSeNet
-# from cityscapes import CityScapes
 from loss import OhemCELoss, Fusionloss
 from optimizer import Optimizer
 import torch
@@ -33,13 +29,12 @@ def parse_args():
     parse = argparse.ArgumentParser()
     return parse.parse_args()
 
-def run_fusion(type='test'):  # 这里是对训练得到的网络模型框架进行测试？
+def run_fusion(type='test'):  
     fusion_model_path = './model/fusion_model_22.pth'
     fused_dir = os.path.join('./MSRS/Fusion', type, 'MSRS-results')
     os.makedirs(fused_dir, mode=0o777, exist_ok=True)
     fusionmodel = eval('CENet')
-
-    fusionmodel = fusionmodel().cuda()  # 调用GPU进行训练
+    fusionmodel = fusionmodel().cuda() 
     fusionmodel.load_state_dict(torch.load(fusion_model_path))
     print('done!')
     test_dataset = Fusion_dataset(type)
