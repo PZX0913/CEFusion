@@ -13,7 +13,7 @@ import os
 def prepare_data_path(dataset_path):#prepare the dataset
     filenames = os.listdir(dataset_path)
     data_dir = dataset_path
-    data = glob.glob(os.path.join(data_dir, "*.bmp"))#返回指定路径下所有尾标为bmp，tif，png..等等的文件
+    data = glob.glob(os.path.join(data_dir, "*.bmp"))#bmp，tif，png.
     data.extend(glob.glob(os.path.join(data_dir, "*.tif")))
     data.extend(glob.glob((os.path.join(data_dir, "*.jpg"))))
     data.extend(glob.glob((os.path.join(data_dir, "*.png"))))
@@ -25,7 +25,7 @@ def prepare_data_path(dataset_path):#prepare the dataset
 class Fusion_dataset(Dataset):
     def __init__(self, split, ir_path=None, vi_path=None):
         super(Fusion_dataset, self).__init__()
-        assert split in ['train', 'test'], 'split must be "train"|"test"'#Val数据集主要的作用是用来验证
+        assert split in ['train', 'test'], 'split must be "train"|"test"'
 
         if split == 'train':
             data_dir_vis = './MSRS/Visible/train/MSRS/'
@@ -56,7 +56,7 @@ class Fusion_dataset(Dataset):
             ir_path = self.filepath_ir[index]
             label_path = self.filepath_label[index]
             image_vis = np.array(Image.open(vis_path))
-            image_inf = cv2.imread(ir_path, 1)#需要改为1，如果是在三通道的情况下训练
+            image_inf = cv2.imread(ir_path, 1)
             label = np.array(Image.open(label_path))
             image_vis = (
                 np.asarray(Image.fromarray(image_vis), dtype=np.float32).transpose((2, 0, 1))/ 255.0
@@ -77,7 +77,7 @@ class Fusion_dataset(Dataset):
             label_path = self.filepath_label[index]
             image_vis = np.array(Image.open(vis_path))
             #image_inf = cv2.imread(ir_path, 0)
-            image_inf = cv2.imread(ir_path, 1)#此状态是在3通道的情况下训练
+            image_inf = cv2.imread(ir_path, 1)
             label = np.array(Image.open(label_path))
             image_vis = (
                 np.asarray(Image.fromarray(image_vis), dtype=np.float32).transpose((2, 0, 1))/ 255.0
