@@ -158,7 +158,7 @@ class Bottle2neck(nn.Module):
         """
         super(Bottle2neck, self).__init__()
 
-        width = int(math.floor(planes * (baseWidth / 64.0)))#math.floor()表示将x向下舍入到最近的数
+        width = int(math.floor(planes * (baseWidth / 64.0)))
         self.conv1 = nn.Conv2d(inplanes, width * scale, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(width * scale)
 
@@ -229,9 +229,9 @@ class Res2Net(nn.Module):
         self.baseWidth = baseWidth
         self.scale = scale
         self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 32, 3, 2, 1, bias=False),#第一个3就代表着输入通道，由于输入的图像都是单通道的形式，此处需要改为1，在之后的网络中也要进行对应的修改
+            nn.Conv2d(3, 32, 3, 2, 1, bias=False),
             # self.conv2d = nn.Conv2d(in_channels=3,out_channels=64,kernel_size=4,stride=2,padding=1)
-            nn.BatchNorm2d(32),#在此处使用了nn.BatchNorm2d网络层，该网络层函数要求输入是4维的，在后续数据集读入的时候可能存在一定的问题，可以改为nn.BatchNorm1d，这样可以接收二维输入。
+            nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
             nn.Conv2d(32, 32, 3, 1, 1, bias=False),
             nn.BatchNorm2d(32),
@@ -295,8 +295,8 @@ class Res2Net(nn.Module):
 
 def resnet50(pretrained=False, **kwargs):
     # https://download.pytorch.org/models/resnet50-19c8e357.pth
-    model = Res2Net(Bottleneck, [3, 4, 6, 3], baseWidth=26, scale=4, **kwargs)  # 先告诉计算机模型的具体架构，具体的参数或权重由后面的预训练模型指定
-    if pretrained:  # 若存在已经经过预训练的模型，则调用该模型中的参数
+    model = Res2Net(Bottleneck, [3, 4, 6, 3], baseWidth=26, scale=4, **kwargs)  
+    if pretrained: 
         # model_state = torch.load('D:/Users/LEGION/PycharmProjects/pythonProject2/MSNet-M2SNet-main/MSNet-M2SNet-main/model/res2net50_v1b_26w_4s-3cf99910.pth')
         # model.load_state_dict(model_state)
         model.load_state_dict(model_zoo.load_url(model_urls['resnet50']))
@@ -333,8 +333,8 @@ def res2net50_v1b_26w_4s(pretrained=True, **kwargs):
     Args:
         pretrained (bool): If True, returns a lib pre-trained on ImageNet
     """
-    model = Res2Net(Bottle2neck, [3, 4, 6, 3], baseWidth=26, scale=4, **kwargs)#先告诉计算机模型的具体架构，具体的参数或权重由后面的预训练模型指定
-    if pretrained:#若存在已经经过预训练的模型，则调用该模型中的参数
+    model = Res2Net(Bottle2neck, [3, 4, 6, 3], baseWidth=26, scale=4, **kwargs)
+    if pretrained:
         #model_state = torch.load('D:/Users/LEGION/PycharmProjects/pythonProject2/MSNet-M2SNet-main/MSNet-M2SNet-main/model/res2net50_v1b_26w_4s-3cf99910.pth')
         #model.load_state_dict(model_state)
         model.load_state_dict(model_zoo.load_url(model_urls['res2net50_v1b_26w_4s']))
@@ -366,8 +366,8 @@ def res2net152_v1b_26w_4s(pretrained=False, **kwargs):
 
 
 if __name__ == '__main__':
-    images = torch.rand(1, 3, 224, 224).cuda(0)#在这里将第二位的3改为了1
-    model = res2net50_v1b_26w_4s(pretrained=True)#预训练模型已经在C盘下载储存完毕，可以直接在现有模型框架中加载使用预训练模型中的参数，这里原本是True，调用下载好的预训练模型，这里改为False，直接使用结构，内部参数不再调用原预训练模型
+    images = torch.rand(1, 3, 224, 224).cuda(0)
+    model = res2net50_v1b_26w_4s(pretrained=True)
     #model = res2net50_v1b_26w_4s(pretrained=False)
     print(model)
     model = model.cuda(0)
