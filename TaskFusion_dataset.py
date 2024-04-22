@@ -31,9 +31,6 @@ class Fusion_dataset(Dataset):
             data_dir_vis = './MSRS/Visible/train/MSRS/'
             data_dir_ir = './MSRS/Infrared/train/MSRS/'
             data_dir_label = './MSRS/Label/train/MSRS/'
-            # data_dir_vis = './RoadScene/Visible/train/RoadScene_1/'
-            # data_dir_ir = './RoadScene/infrared/train/RoadScene_1/'
-            # data_dir_label = './RoadScene/Label/train/RoadScene/'
             self.filepath_vis, self.filenames_vis = prepare_data_path(data_dir_vis)
             self.filepath_ir, self.filenames_ir = prepare_data_path(data_dir_ir)
             self.filepath_label, self.filenames_label = prepare_data_path(data_dir_label)
@@ -76,16 +73,12 @@ class Fusion_dataset(Dataset):
             ir_path = self.filepath_ir[index]
             label_path = self.filepath_label[index]
             image_vis = np.array(Image.open(vis_path))
-            #image_inf = cv2.imread(ir_path, 0)
             image_inf = cv2.imread(ir_path, 1)
             label = np.array(Image.open(label_path))
             image_vis = (
                 np.asarray(Image.fromarray(image_vis), dtype=np.float32).transpose((2, 0, 1))/ 255.0
-                #np.asarray(Image.fromarray(image_vis), dtype=np.float32).transpose((2, 0, 1))
             )
             image_ir = np.asarray(Image.fromarray(image_inf), dtype=np.float32).transpose((2, 0, 1)) / 255.0
-            #image_ir = np.asarray(Image.fromarray(image_inf), dtype=np.float32)
-            #image_ir = np.expand_dims(image_ir, axis=0)
             label = np.asarray(Image.fromarray(label), dtype=np.int64)
             name = self.filenames_vis[index]
             return (
@@ -121,7 +114,6 @@ if __name__ == '__main__':
     train_loader = DataLoader(
         dataset=train_dataset,
         batch_size=8,
-        #shuffle=True,
         shuffle=False,
         num_workers=2,
         pin_memory=True,
