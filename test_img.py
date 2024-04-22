@@ -94,7 +94,7 @@ if __name__ == "__main__":
     time_start = time.time()  # start time
     parser = argparse.ArgumentParser(description='Train with pytorch')
     parser.add_argument('--model_name', '-M', type=str, default='CENet-Fusion')
-    parser.add_argument('--batch_size', '-B', type=int, default=8)
+    parser.add_argument('--batch_size', '-B', type=int, default=4)
     parser.add_argument('--gpu', '-G', type=int, default=0)
     parser.add_argument('--num_workers', '-j', type=int, default=8)
     args = parser.parse_args()
