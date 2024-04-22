@@ -1,7 +1,4 @@
-# Copyright 2020 by Gongfan Fang, Zhejiang University.
-# All rights reserved.
 import warnings
-
 import torch
 import torch.nn.functional as F
 
