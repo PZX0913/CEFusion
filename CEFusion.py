@@ -29,7 +29,6 @@ class CNN1(nn.Module):
 
 
 class CENet(nn.Module):
-    # res2net based encoder decoder
     def __init__(self):
         super(CENet, self).__init__()
         # ResNet Backbone
@@ -274,7 +273,6 @@ class CENet(nn.Module):
 
         output64_32 = self.output64_32(output1)
         output32_16 = self.output32_16(output64_32)
-        # output64_16 = self.output64_16(output1) 
         output16_3 = self.output16_3(output32_16)
         output = F.upsample(output16_3, size=input.size()[2:], mode='bilinear')
 
