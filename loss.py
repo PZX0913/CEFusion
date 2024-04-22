@@ -1,11 +1,6 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
-
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-#import pytorch_msssim 
 import SSIM
 import Diceloss
 import cv2
