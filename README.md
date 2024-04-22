@@ -7,4 +7,4 @@ Code:0913
 The test dataset can be download at the link:https://pan.baidu.com/s/1ZJXz9ILqUvBgQTJHPOWmzQ.
 Code:0816
 
-Before testing, please modify the path of the input image in the Task Fusion.py.
+Before testing, please modify the path of the input image in the TaskFusion_dataset.py.
