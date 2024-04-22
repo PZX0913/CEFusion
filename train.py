@@ -72,16 +72,13 @@ def YCrCb2RGB(input_im):
 
 
 def train_fusion(num=0, logger=None):
-    # num: control the segmodel
     lr_start = 0.001
     modelpth = './model-save'
     Method = 'Fusion'
     modelpth = os.path.join(modelpth, Method)
     fusionmodel = eval('CENet')
     fusionmodel = fusionmodel().cuda()
-    #fusionmodel().train()
     fusionmodel.train())
-    #optimizer = torch.optim.Adam(fusionmodel().parameters(), lr=lr_start)
     optimizer = torch.optim.Adam(fusionmodel.parameters(), lr=lr_start)
     if logger == None:
         logger = logging.getLogger()
@@ -158,7 +155,6 @@ def train_fusion(num=0, logger=None):
                         'loss_ssim: {loss_ssim:.4f}',
                         'loss_content: {loss_content:.4f}',
                         'loss_edge: {loss_edge:.4f}',
-                        #'loss_seg: {loss_seg:.4f}',
                         'eta: {eta}',
                         'time: {time:.4f}',
                     ]
@@ -171,7 +167,6 @@ def train_fusion(num=0, logger=None):
                     loss_ssim=loss_ssim.item(),
                     loss_content=loss_content.item(),
                     loss_edge=loss_edge.item(),
-                    #loss_seg=loss_seg,
                     time=t_intv,
                     eta=eta,
                 )
