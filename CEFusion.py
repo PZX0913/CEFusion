@@ -273,7 +273,7 @@ class CENet(nn.Module):
 
         output64_32 = self.output64_32(output1)
         output32_16 = self.output32_16(output64_32)
-        output16_3 = self.output16_3(output32_16)
+        output16_3 = self.output16_3(output32_16)    #16_1
         output = F.upsample(output16_3, size=input.size()[2:], mode='bilinear')
 
         if self.training:
