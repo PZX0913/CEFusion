@@ -266,13 +266,13 @@ class CENet(nn.Module):
         level1 = self.level1(x2_1 + x3_2_1 + x4_3_2_1 + x5_4_3_2_1 + x1_dem_1)
 
         x5_dem_5 = self.x5_dem_5(x5)
-        output4 = self.output4(F.upsample(x5_dem_5, size=level4.size()[2:], mode='bilinear') + level4)
+        output4 = self.output4(F.upsample(x5_dem_5, size=level4.size()[2:], mode='bilinear') + level4)   #concat
         output3 = self.output3(F.upsample(output4, size=level3.size()[2:], mode='bilinear') + level3)
         output2 = self.output2(F.upsample(output3, size=level2.size()[2:], mode='bilinear') + level2)
         output1 = self.output1(F.upsample(output2, size=level1.size()[2:], mode='bilinear') + level1)
 
-        output64_32 = self.output64_32(output1)
-        output32_16 = self.output32_16(output64_32)
+        output64_32 = self.output64_32(output1)      #64_16
+        output32_16 = self.output32_16(output64_32)  
         output16_3 = self.output16_3(output32_16)    #16_1
         output = F.upsample(output16_3, size=input.size()[2:], mode='bilinear')
 
