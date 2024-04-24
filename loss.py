@@ -58,6 +58,7 @@ class Fusionloss(nn.Module)
     def forward(self, image_vis, image_ir, labels, generate_img, i):
         image_y=image_vis[:,0:,:,:]
 
+        #SSIM loss
         ssim_loss = SSIM.ssim
         ssim_loss_value = 0
         ssim_loss_temp = ssim_loss(generate_img, image_vis, data_range=255, win=None)
@@ -66,10 +67,10 @@ class Fusionloss(nn.Module)
         ssim_loss_value += (1 - ssim_loss_temp2)
         loss_ssim = ssim_loss_value
 
+        #Edge loss
         image_vis1 = image_vis.cpu().numpy()
         image_ir1 = image_ir.cpu().numpy()
         generate_img1 = generate_img.cpu().detach().numpy()
-
         image_vis1 = image_vis1*255
         image_ir1 = image_ir1*255
         generate_img1 = generate_img1*255
