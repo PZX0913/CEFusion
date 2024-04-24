@@ -101,7 +101,7 @@ class Fusionloss(nn.Module)
         generate_img_grad = self.sobelconv(generate_img)
         x_grad_joint = torch.max(y_grad, ir_grad)
         loss_grad = F.l1_loss(x_grad_joint, generate_img_grad)
-        loss_content = loss_in+10*loss_grad+loss_ssim
+        loss_content = loss_in+10*loss_grad+10*loss_ssim
 
         loss_total =(loss_in + 10 * loss_grad + 10 * loss_ssim) + 8 * loss_edge
         return loss_total, loss_pixel, loss_grad, loss_ssim, loss_content, loss_edge
